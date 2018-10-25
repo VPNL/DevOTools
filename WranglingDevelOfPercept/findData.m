@@ -12,7 +12,7 @@ function dataPoint = findData( data, sheetName, subjID, colTitle )
 %       colTitle: (string) Name of the column in the spreadsheet from which I
 %             want data. Example "Anatomy"
 %   returns the data point for the corresponding subject ID, sheet, and
-%       colTitle
+%       colTitle. If colTitle is not in sheetName, then it will return Nan.
 %
 %AR Oct 2018
 
@@ -28,9 +28,14 @@ if ~isSubj(data,sheetName,subjID)
     return;
 end
 
-%Checking to make sure that there is a column with the title colTitle and
-%finding what index it is.
-column = whichCol(data,colTitle,sheetName);
+%Trying to find the index for this column
+try
+    column = whichCol(data,colTitle,sheetName);
+catch
+    %If this isn't a valid column, return a NaN data point
+    dataPoint = NaN;
+    return;
+end
 
 %Getting the sheet index in data corresponding to sheetName
 sheetIndx = whichSheet(data,sheetName);
@@ -41,28 +46,4 @@ row = whichRow(data,sheetName,subjID);
 %Get the appropriate data
 dataPoint = data(sheetIndx).raw(row,column);
 dataPoint = dataPoint{1};
-%{
-dataPoint = cell2mat(dataPoint);
-
-%If dataPoint is anything other than numeric, change it to NaN
-if ~isnumeric(dataPoint)
-    dataPoint = NaN;
 end
-%If there were two rows for the subject, then length of dataPoint would be
-%greater than 1
-if length(dataPoint) > 1
-    %If there's more than one datapoint that's not NaN, then I'll throw an
-    %error message
-    if sum(~isnan(dataPoint)) > 1
-        error([subjID{1},' in sheet ',sheetName{1},...
-               ' has more than one date listed for ',colTitle])
-    elseif sum(~isnan(dataPoint)) == 0 %If none of the data points are not NaN
-        dataPoint = NaN;
-        return
-    else
-        dataPoint = dataPoint(~isnan(dataPoint));
-    end
-end
-%}
-end
-

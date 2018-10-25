@@ -53,6 +53,7 @@ allSheets = [data(allSheetsIndx).sheet]; %Storing all sheets for adults/kids
 %Organizing data into structure                                         
 for subj = allIDs
     for column = columns
+        
         for year = years
             col = column{1};
             fieldname = col(col ~= '%' & col ~= ' ' & col ~= '-' & ...
@@ -62,6 +63,8 @@ for subj = allIDs
             dataPoint = findData(data,sheet,subj,col);
             %Store in structure
             organizedData.(subj{1}).(fieldname)(year) = dataPoint;
+            
+
         end
     end
 end
