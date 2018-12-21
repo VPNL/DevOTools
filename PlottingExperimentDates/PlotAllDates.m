@@ -15,7 +15,7 @@ end
 %% Load Development of Perception Spreadsheet and Organize Data
 
 % Load sheet, will need to update with each new download
-sheet = loadDevelofPercept('DevelopmentOfPerception10252018.xlsx');
+sheet = loadDevelofPercept('DevelopmentOfPerceptionDownload103118.xlsx');
 
 % Specify column names for all dates
 dateCols = {'Anatomy Date','kidLoc Date','Ret Date','Toon Date','MT Date',...
@@ -76,7 +76,7 @@ a = get(gca,'YTickLabel');
 set(gca,'YTickLabel',a,'fontsize',24);
 %Adding gridlines
 set(gca,'YGrid','on')
-legend('Year 1 Scan','Year 2 Behavioral','Year 2 Scan','Year 2 Behavioral',...
+legend('Year 1 Scan','Year 1 Behavioral','Year 2 Scan','Year 2 Behavioral',...
        'Year 3 Scan','Year 3 Behavioral','Year 4 Scan','Year 4 Behavioral',...
        'Location','best');
 title('Dates of Adult Experiments')
@@ -122,9 +122,10 @@ a = get(gca,'XTickLabel');
 set(gca,'XTickLabel',a,'fontsize',24);
 a = get(gca,'YTickLabel');
 set(gca,'YTickLabel',a,'fontsize',24);
+
 %Adding gridlines
 set(gca,'YGrid','on')
-legend('Year 1 Scan','Year 2 Behavioral','Year 2 Scan','Year 2 Behavioral',...
+legend('Year 1 Scan','Year 1 Behavioral','Year 2 Scan','Year 2 Behavioral',...
        'Year 3 Scan','Year 3 Behavioral','Year 4 Scan','Year 4 Behavioral',...
        'Year 5 Scan','Year 5 Behavioral','Location','best');
 title('Dates of Kid Experiments')
