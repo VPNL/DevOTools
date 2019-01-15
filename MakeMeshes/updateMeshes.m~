@@ -45,6 +45,11 @@ end
 % Specify class nifti file
 clsNftiFile = [anatomy 't1_class.nii.gz'];
 
+
+
+% Store whether the anatomy is under 3DAnatomy or 3Danatomy
+anatomy = clsNftiFile(1:end-15);
+
 % Reinstall segmentation from updated t1_class.nii.gz file
 installSegmentation([],[],clsNftiFile,3); % You may be prompted to for the
                                           % Volume Anatomy Path
@@ -53,7 +58,7 @@ installSegmentation([],[],clsNftiFile,3); % You may be prompted to for the
 hV = initHiddenGray;
 
 % Set Volume Anatomy Path
-mrSessPath = fullfile(sesDir, 'mrSESSION.mat');
+mrSessPath = fullfile(HOMEDIR, 'mrSESSION.mat');
 vANATOMYPATH = [anatomy 't1.nii.gz'];
 save(mrSessPath, 'vANATOMYPATH', '-append');
 saveSession;
