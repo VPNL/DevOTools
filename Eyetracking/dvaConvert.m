@@ -41,6 +41,9 @@ end
 data(:,2) = data(:,2) - ( pxlScrnDim(1) / 2 );
 data(:,3) = data(:,3) - ( pxlScrnDim(2) / 2 );
 
+% Flip direction of y axes
+data(:,3) = data(:,3)*-1;
+
 % Calculate conversion from pixels to milimeters
 MMCONVERT = mmScrnDim(1) / pxlScrnDim(1);
 
