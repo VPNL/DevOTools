@@ -15,6 +15,7 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir )
 % This script is only compatable for Macs
 %
 % AR Jan 2019
+% AR Feb 2019 changed location of edf2asc to GitHub
 
 % Because the edf2asc binary script used in this function only runs on Macs
 if ~ismac
@@ -25,7 +26,7 @@ end
 edfFile = [edfdir '/' fName '.edf'];
 % There is a unix script called edf2asc that will be called. To run it, we
 % need to change the directory
-cd /Volumes/group/biac2/kgs/projects/Longitudinal/Behavioral/Eyetracking/Code/
+cd /Volumes/group/biac2/kgs/projects/GitHub/DevOTools/Eyetracking
 % Storing the unix command
 edf2ascCommand = ['./edf2asc -s -miss NaN ' edfFile];
 % Running command
