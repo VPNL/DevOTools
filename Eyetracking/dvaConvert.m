@@ -32,7 +32,7 @@ if ~exist('mmScrnDim')
 end
 
 if ~exist('pxlScrnDim')
-    pxlScrnDim = [1024 768];
+    pxlScrnDim = [1152 870];
 end
 
 %% Unit Convertion
@@ -51,7 +51,7 @@ MMCONVERT = mmScrnDim(1) / pxlScrnDim(1);
 data(:,2:3) = data(:,2:3) * MMCONVERT;
 
 % Convert data to DVA
-data(:,2:3) = atand(data(:,2:3)/scrnDstnce) * 2;
+data(:,2:3) = atand(data(:,2:3)/scrnDstnce);
 
 % Return finalData
 finalData = data;
