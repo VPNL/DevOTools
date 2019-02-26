@@ -1,8 +1,7 @@
-function finalData = dvaConvert( data, pxlScrnDim, mmScrnDim, ...
+function [finalData,maxX,maxY] = dvaConvert( data, pxlScrnDim, mmScrnDim, ...
                                              scrnDstnce )
 % dvaConvert converts eyetracker data from pixel units to degrees of visual
 % angle (dva)
-%
 %   finalData = dvaConvert( data, [pxlScrnDim], [mmScrnDim], [scnDstnce] )
 %       data - 3 dimensional data matrix of doubles containing eyetracking 
 %              data. raw(:,1) gives time, raw(:,2) gives x coodinate, and 
@@ -21,8 +20,11 @@ function finalData = dvaConvert( data, pxlScrnDim, mmScrnDim, ...
 %                   Memory experiment (540 mm)
 %       finalData - Data matrix of doubles with the same shape as raw.
 %                   Contains data in units of degree of visual angle.
+%       maxX - The maximum dva possible in the x direction
+%       maxY - The maximum dva possible in the y direction
 %
 % AR Jan 2019
+% AR Feb 2019 Added outputs for max dva possible in x and y direction
 
 %% Check inputs and set defaults
 if ~exist('scnDstnce')
@@ -57,6 +59,10 @@ data(:,2:3) = atand(data(:,2:3)/scrnDstnce);
 
 % Return finalData
 finalData = data;
+
+%% Calculate max dva in x and y directions
+
+maxX = atand(mmScrnDim(
 
 end
 
