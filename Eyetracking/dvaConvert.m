@@ -10,12 +10,12 @@ function finalData = dvaConvert( data, pxlScrnDim, mmScrnDim, ...
 %              pixels.
 %       pxlScrnDim - (optional) vector of length 2 containing the x and y
 %                    screen dimensions in pixels. Defaults to the screen
-%                    dimensions for the Recognition Memory experiment [1152
-%                    870].
+%                    dimensions for the Recognition Memory experiment [1024
+%                    768].
 %       mmScrnDim - (optional) vector of length 2 containing the x and y
 %                   screen dimensions in milimeters. Defaults to the screen
-%                   dimensions for the Recognition Memory experiment [405
-%                   303]
+%                   dimensions for the Recognition Memory experiment
+%                   [385.28 288.96]
 %       scnDstnce - (optional) scalar. Distance from eye to screen in
 %                   milimeters. Defaults to screen distance for Recognition
 %                   Memory experiment (540 mm)
@@ -23,6 +23,8 @@ function finalData = dvaConvert( data, pxlScrnDim, mmScrnDim, ...
 %                   Contains data in units of degree of visual angle.
 %
 % AR Jan 2019
+% AR Feb 2019 updated default parameters to match the RecMem code,
+% corrected dva conversion (was off by a factor of 2)
 
 %% Check inputs and set defaults
 if ~exist('scnDstnce')
@@ -30,11 +32,11 @@ if ~exist('scnDstnce')
 end
 
 if ~exist('mmScrnDim')
-    mmScrnDim = [405 303];
+    mmScrnDim = [385.28 288.96];
 end
 
 if ~exist('pxlScrnDim')
-    pxlScrnDim = [1152 870];
+    pxlScrnDim = [1024 768];
 end
 
 %% Unit Convertion on Data

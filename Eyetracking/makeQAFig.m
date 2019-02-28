@@ -11,8 +11,8 @@ function fig = makeQAFig( data, figName, screenshot, mmScrnDim, scrnDstnce )
 %                    plot (default is from RecMem experiment)
 %       mmScrnDim - (optional) vector of length 2 containing the x and y
 %                   screen dimensions in milimeters. Defaults to the screen
-%                   dimensions for the Recognition Memory experiment [405
-%                   303]
+%                   dimensions for the Recognition Memory experiment
+%                   [385.28 288.96]
 %       scnDstnce - (optional) scalar. Distance from eye to screen in
 %                   milimeters. Defaults to screen distance for Recognition
 %                   Memory experiment (540 mm)
@@ -21,7 +21,8 @@ function fig = makeQAFig( data, figName, screenshot, mmScrnDim, scrnDstnce )
 %
 % AR Jan 2019
 % AR Feb 2019 Setting the axes to match the edges of the screen. Overlaying
-%             screenshot of experiment.
+%             screenshot of experiment. Updating default parameters to
+%             match RecMem code.
 
 %% Check inputs and set defaults
 if ~exist('screenshot')
@@ -34,7 +35,7 @@ if ~exist('scnDstnce')
 end
 
 if ~exist('mmScrnDim')
-    mmScrnDim = [405 303];
+    mmScrnDim = [385.28 288.96];
 end
 
 %% Plot Data

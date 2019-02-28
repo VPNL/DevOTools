@@ -21,12 +21,12 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
 %                    plot (default is from RecMem experiment)
 %       pxlScrnDim - (optional) vector of length 2 containing the x and y
 %                    screen dimensions in pixels. Defaults to the screen
-%                    dimensions for the Recognition Memory experiment [1152
-%                    870].
+%                    dimensions for the Recognition Memory experiment [1024
+%                    768].
 %       mmScrnDim - (optional) vector of length 2 containing the x and y
 %                   screen dimensions in milimeters. Defaults to the screen
-%                   dimensions for the Recognition Memory experiment [405
-%                   303]
+%                   dimensions for the Recognition Memory experiment
+%                   [385.28 288.96]
 %       scnDstnce - (optional) scalar. Distance from eye to screen in
 %                   milimeters. Defaults to screen distance for Recognition
 %                   Memory experiment (540 mm)
@@ -35,7 +35,8 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
 %
 % AR Jan 2019
 % AR Feb 2019 changed location of edf2asc to GitHub; added screenshot
-%             behind plots; added flag to plot raw data
+%             behind plots; added flag to plot raw data; updated default
+%             dimensions to match RecMem code
 
 % Because the edf2asc binary script used in this function only runs on Macs
 if ~ismac
@@ -54,11 +55,11 @@ if ~exist('scnDstnce')
 end
 
 if ~exist('mmScrnDim')
-    mmScrnDim = [405 303];
+    mmScrnDim = [385.28 288.96];
 end
 
 if ~exist('pxlScrnDim')
-    pxlScrnDim = [1152 870];
+    pxlScrnDim = [1024 768];
 end
 
 if ~exist('plotRaw')
