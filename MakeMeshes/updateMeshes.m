@@ -24,11 +24,15 @@ function updateMeshes( sesDir )
 % AR Nov 2018
 % AR Dec 2018 modified mrVista code so that mesh parameters are set 
 %             automatically
+% AR Feb 2019 used mrmStart to start mrMesh at the beginning of the code
 
 % Check to make sure mrVista is added to the path
 if ~exist('mrVista')
     error('Please add mrVista to your path')
 end
+
+% Start mrMesh (important for Macs)
+mrmStart
 
 % Go to session directory
 cd(sesDir)
