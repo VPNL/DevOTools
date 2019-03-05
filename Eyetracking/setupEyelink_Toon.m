@@ -1,7 +1,9 @@
-function setupEyelink_DevO( edfName )
-%setupEyelink_DevO setups eyelink system for eye tracking
+function setupEyelink_Toon( edfName )
+% setupEyelink_Toon setups eyelink system for eye tracking during the
+% toonotopy experiment. Will reduce projector resolution to 1280 x 800 
+% pixels, and sets display distance to 940 mm.
 %
-%   setupEyelink_DevO( edfName )
+%   setupEyelink_Toon( edfName )
 %
 % AR March 2019
 
@@ -11,6 +13,12 @@ if EyelinkInit() ~= 1
 end
 
 % Open PsychToolBox Window on largest screen
+screenNumber = max(Screen('Screens'));
+Screen('Resolution',screenNumber,1280,800) % Decrease the projector
+                                           % resolution so the participant
+                                           % can see the full screen.
+                                           % Matches resolution used for
+                                           % Toonotopy
 win = Screen('OpenWindow',max(Screen('Screens')));
 % Set this window to highest priority
 Priority(MaxPriority(win));
@@ -35,6 +43,10 @@ Eyelink('command','screen_pixel_coords = %ld %ld %ld %ld', 0, 0, ...
         width-1, height-1); % sets physical.ini to screen pixels
 Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, width-1, ...
         height-1);
+Eyelink('command','screen_distance = 940') % Distance from eye tracker 
+                                           % camera to mirror image of
+                                           % subject's eye (measured by AR
+                                           % and MN on 03.05.2019)
 Eyelink('command', 'calibration_type = HV3'); % 3 point calibration, 
                                               % set in calibr.ini
 % set EDF file contents
@@ -49,9 +61,12 @@ Eyelink('command', ...
 Eyelink('command', ...
         'link_sample_data  = LEFT,RIGHT,GAZE,GAZERES,AREA,STATUS');
 % allow to use eyelink gamepad to accept fixations/targets
-Eyelink('command', 'button_function 5 "accept_target_fixation"'); 
+Eyelink('command', 'button_function 5 "accept_target_fixation"');
 
 % Calibrate, Validate and Correct Eye Tracker for Drift
 EyelinkDoTrackerSetup(el); % Will wait for you to do the calibration, validation, and drift correction. Will end when you move to the Output/Record Window
+
+% Close edf file
+Eyelink('CloseFile')
 
 end
