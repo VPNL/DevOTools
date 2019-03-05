@@ -66,7 +66,4 @@ Eyelink('command', 'button_function 5 "accept_target_fixation"');
 % Calibrate, Validate and Correct Eye Tracker for Drift
 EyelinkDoTrackerSetup(el); % Will wait for you to do the calibration, validation, and drift correction. Will end when you move to the Output/Record Window
 
-% Close edf file
-Eyelink('CloseFile')
-
 end
