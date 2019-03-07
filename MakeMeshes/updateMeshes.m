@@ -57,11 +57,13 @@ installSegmentation([],[],clsNftiFile,3); % You may be prompted to for the
 % Open volume view
 hV = initHiddenGray;
 
+%{
 % Set Volume Anatomy Path
 mrSessPath = fullfile(sesDir, 'mrSESSION.mat');
 vANATOMYPATH = [anatomy 't1.nii.gz'];
 save(mrSessPath, 'vANATOMYPATH', '-append');
-%saveSession;
+saveSession;
+%}
 
 % Load anatomy
 hV = loadAnat(hV);
