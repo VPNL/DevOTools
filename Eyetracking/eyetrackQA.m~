@@ -37,7 +37,6 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
 % AR Feb 2019 changed location of edf2asc to GitHub; added screenshot
 %             behind plots; added flag to plot raw data; updated default
 %             dimensions to match RecMem code
-% AR Mar 2019 added additional plot that centers data at the median x and y
 
 % Because the edf2asc binary script used in this function only runs on Macs
 if ~ismac
@@ -99,25 +98,22 @@ processed = removeBlinks( raw ); clear raw;
 processed = dvaConvert( processed, pxlScrnDim, mmScrnDim, scrnDstnce );
 save([processeddir '/' fName '.mat'],'processed')
 
-% Plot processed data
+% Plot processed data and save figure
 fig = makeQAFig( processed, [fName ' Processed'], screenshot, mmScrnDim, ...
                  scrnDstnce );
-% Save figure
 saveas(fig,[figdir '/processed/' fName '_processed.png']);
+
 % Close figure
 close;
 
 %% Center data and make a new plot
+% Center data at median x and y
 processed(:,2) = processed(:,2) - median(processed(:,2));
 processed(:,3) = processed(:,3) - median(processed(:,3));
 
 % Plot centered data and save figure
-fig = makeQAFig( processed, [fName ' Centered'], screenshot, mmScrnDim, ...
-                 scrnDstnce );
-% Save figure
-saveas(fig,[figdir '/centered/' fName '_centered.png']);
-% Close figure
-close;
+
+
 
 % Change directory to figdir
 cd(figdir)

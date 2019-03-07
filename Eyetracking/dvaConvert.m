@@ -41,7 +41,7 @@ end
 
 %% Unit Convertion on Data
 
-% Center data
+% Center data at zero
 data(:,2) = data(:,2) - ( pxlScrnDim(1) / 2 );
 data(:,3) = data(:,3) - ( pxlScrnDim(2) / 2 );
 
