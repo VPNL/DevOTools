@@ -25,6 +25,7 @@ function updateMeshes( sesDir )
 % AR Dec 2018 modified mrVista code so that mesh parameters are set 
 %             automatically
 % AR Feb 2019 used mrmStart to start mrMesh at the beginning of the code
+% AR Mar 2019 commented out saveSession (line 64)
 
 % Check to make sure mrVista is added to the path
 if ~exist('mrVista')
@@ -60,7 +61,7 @@ hV = initHiddenGray;
 mrSessPath = fullfile(sesDir, 'mrSESSION.mat');
 vANATOMYPATH = [anatomy 't1.nii.gz'];
 save(mrSessPath, 'vANATOMYPATH', '-append');
-saveSession;
+%saveSession;
 
 % Load anatomy
 hV = loadAnat(hV);
