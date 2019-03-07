@@ -5,8 +5,9 @@ function updateMeshes( sesDir )
 % In the mrVista directory, make sure that there is a softlink to the
 % 3Dantomy, and that the volume anatomy is aligned to the inplane.
 %
-%   updateMeshes( sesDir )
-%       sesDir: (string) path to mrVista directory
+%   updateMeshes( [sesDir] )
+%       sesDir (optional): (string) path to mrVista directory (default is 
+%                           current directory)
 %
 %       Saves 6 meshes...
 %           - lh_wrinkled: wrinkled left hemisphere
@@ -25,11 +26,17 @@ function updateMeshes( sesDir )
 % AR Dec 2018 modified mrVista code so that mesh parameters are set 
 %             automatically
 % AR Feb 2019 used mrmStart to start mrMesh at the beginning of the code
-% AR Mar 2019 commented out saveSession (line 64)
+% AR Mar 2019 commented out setting vANATOMYPATH as it was causing issues
+%             and is unnecessary; made sesDir an optional argument
 
 % Check to make sure mrVista is added to the path
 if ~exist('mrVista')
     error('Please add mrVista to your path')
+end
+
+% Check inputs
+if ~exist('sesDir')
+    sesDir = pwd;
 end
 
 % Start mrMesh (important for Macs)
