@@ -1,5 +1,6 @@
 function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
-                     plotRaw, screenshot, pxlScrnDim, mmScrnDim, scrnDstnce )
+                     plotRaw, screenshot, pxlScrnDim, mmScrnDim, ...
+                     scrnDstnce )
 % eyetrackQA creates quality assurance files to help determine whether a
 % subject was fixating. It mimics Jesse's Eyetrack_final code stored under
 % kgs/projects/Longitudinal/Behavioral/Eyetracking/Code
@@ -16,7 +17,7 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
 %       figdir: (string) path to where the QA figures will be stored
 %       plotRaw: (optional) boolean denoting whether you would like to plot
 %                           the raw data in addition to the processed data
-%                           (default is false)
+%                           (default is true)
 %       screenshot - (optional) path to image you want to appear behind the
 %                    plot (default is from RecMem experiment)
 %       pxlScrnDim - (optional) vector of length 2 containing the x and y
@@ -37,7 +38,8 @@ function eyetrackQA( fName, edfdir, ascdir, rawdir, processeddir, figdir, ...
 % AR Feb 2019 changed location of edf2asc to GitHub; added screenshot
 %             behind plots; added flag to plot raw data; updated default
 %             dimensions to match RecMem code
-% AR Mar 2019 added additional plot that centers data at the median x and y
+% AR Mar 2019 added additional plot that centers data at the median x and
+%             y; changed default for plotRaw to true
 
 % Because the edf2asc binary script used in this function only runs on Macs
 if ~ismac
@@ -64,7 +66,7 @@ if ~exist('pxlScrnDim')
 end
 
 if ~exist('plotRaw')
-    plotRaw = false;
+    plotRaw = true;
 end
 
 %% Convert edf file to asc
@@ -89,7 +91,7 @@ if plotRaw
     fig = makeQAFig( dvaConvert(raw, pxlScrnDim, mmScrnDim, scrnDstnce),...
                      [fName ' Raw'], screenshot, mmScrnDim, scrnDstnce );
     % Save figure
-    saveas(fig,[figdir '/raw/' fName '_raw.png']);
+    saveas(fig,[figdir '/raw/' fName '_raw.jpg'],'jpg');
     % Close figure
     close;
 end
@@ -103,19 +105,19 @@ save([processeddir '/' fName '.mat'],'processed')
 fig = makeQAFig( processed, [fName ' Processed'], screenshot, mmScrnDim, ...
                  scrnDstnce );
 % Save figure
-saveas(fig,[figdir '/processed/' fName '_processed.png']);
+saveas(fig,[figdir '/processed/' fName '_processed.jpg'],'jpg');
 % Close figure
 close;
 
 %% Center data and make a new plot
-processed(:,2) = processed(:,2) - median(processed(:,2));
-processed(:,3) = processed(:,3) - median(processed(:,3));
+processed(:,2) = processed(:,2) - nanmedian(processed(:,2));
+processed(:,3) = processed(:,3) - nanmedian(processed(:,3));
 
 % Plot centered data and save figure
 fig = makeQAFig( processed, [fName ' Centered'], screenshot, mmScrnDim, ...
                  scrnDstnce );
 % Save figure
-saveas(fig,[figdir '/centered/' fName '_centered.png']);
+saveas(fig,[figdir '/centered/' fName '_centered.jpg'],'jpg');
 % Close figure
 close;
 

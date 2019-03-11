@@ -43,8 +43,7 @@ for i = 1:length(starts)
   s = starts(i); % Timepoint right before the start of the blink
   go = 20; % Will continue deleting until there are this many consecutive 
            % non-blink datapoints. Since the RecMem experiment records at
-           % 150 Hz, each data points are taken once every 7 miliseconds or
-           % so.
+           % 1000 Hz
   while s>0 & go>0
     % Check to see if y value shows a significant jump in the data
     if (ydiff(s) > (ydiffmean + 3*ydiffstd)) | ...

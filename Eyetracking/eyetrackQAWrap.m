@@ -7,13 +7,14 @@ function eyetrackQAWrap( year, plotRaw )
 %       year - (double) year in study you want analyzed
 %       plotRaw: (optional) boolean denoting whether you would like to plot
 %                           the raw data in addition to the processed data
-%                           (default is false)
+%                           (default is true)
 %
 % AR Feb 2019
+% AR Mar 2019 Changed plotRaw default to true
 
 % Checking inputs
 if ~exist('plotRaw')
-    plotRaw = false;
+    plotRaw = true;
 end
 
 % Setting data file paths
