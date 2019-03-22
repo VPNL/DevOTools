@@ -11,7 +11,7 @@ function PlotAllDates(sheetName)
 %
 % AR Oct 2018
 % AR Mar 2019 Converted from script to function to specify newest
-%             spreadsheet file name, place legend beneath the plot,
+%             spreadsheet file name, place legend to the right of the plot,
 %             saves figures under
 %             Longitudinal/data_management/PlotAllDates, changed sizes of
 %             dots and text
