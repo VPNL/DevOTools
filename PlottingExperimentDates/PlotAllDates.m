@@ -1,11 +1,20 @@
-%% PlotAllDates
+function PlotAllDates(sheetName)
 % PlotAllDates will make a plots that show when each participant had scans
 % and behavioral testing across the years. The purpose of these plots is to
 % check to make sure that the scans and behavioral tests are grouped
 % closely across the years of the experiment. To run this code, you will
 % need DevOTools added to your path.
 %
+%   PlotAllDates(sheetName)
+%       sheeName - (string) filepath to latest Development of Perception
+%       download
+%
 % AR Oct 2018
+% AR Mar 2019 Converted from script to function to specify newest
+%             spreadsheet file name, place legend beneath the plot,
+%             saves figures under
+%             Longitudinal/data_management/PlotAllDates, changed sizes of
+%             dots and text
 
 % Check to make sure that DevOTools is in the path
 if ~exist('DevOTools')
@@ -15,7 +24,7 @@ end
 %% Load Development of Perception Spreadsheet and Organize Data
 
 % Load sheet, will need to update with each new download
-sheet = loadDevelofPercept('DevelopmentOfPerceptionDownload103118.xlsx');
+sheet = loadDevelofPercept(sheetName);
 
 % Specify column names for all dates
 dateCols = {'Anatomy Date','kidLoc Date','Ret Date','Toon Date','MT Date',...
@@ -33,13 +42,14 @@ kidData = organizeData(sheet,dateCols);
 colors = {'r','g','b','m','k'};
 % Have different size dot for each year's dates to avoid overlap between
 % years
-sizes = [300 150 75 50 25];
+sizes = [300 150 75 50 25]*.25;
+
 
 % Loop through adult subject IDs, experiments, and years
 adultSubj = fieldnames(adultData); % Getting all of the subject names
 experiments = fieldnames(adultData.AD25); % Getting all of the experiment 
                                           % field names
-figure(1) % Open figure
+adultFig = figure('visible','off'); % Open figure
 for i = 1:length(adultSubj) % Loop across adult subject IDs
     subj = adultSubj{i};
     for j = 1:length(experiments) % Loop across experiment names
@@ -71,23 +81,32 @@ xticks([0 365 365*2 365*3 365*4 365*5]);
 xticklabels({'0','1','2','3','4','5'});
 xlabel('Years Since First Experiment');
 a = get(gca,'XTickLabel');
-set(gca,'XTickLabel',a,'fontsize',24);
+set(gca,'XTickLabel',a);%,'fontsize',24);
 a = get(gca,'YTickLabel');
-set(gca,'YTickLabel',a,'fontsize',24);
+set(gca,'YTickLabel',a);%,'fontsize',24);
 %Adding gridlines
 set(gca,'YGrid','on')
 legend('Year 1 Scan','Year 1 Behavioral','Year 2 Scan','Year 2 Behavioral',...
        'Year 3 Scan','Year 3 Behavioral','Year 4 Scan','Year 4 Behavioral',...
-       'Location','best');
+       'Location','eastoutside');
 title('Dates of Adult Experiments')
 hold off
 
-clear subjDateMatrix
+% Reset axis size
+set(adultFig,'PaperUnits','centimeters');
+axisSize = [0 0 40 25];
+set(adultFig,'PaperPosition',axisSize);
+
+% Save figure of adult dates
+saveas(adultFig,[RAID('projects','Longitudinal','data_management',...
+       'PlotAllDates') '/adultDates_' date '.jpg'],'jpg');
+
+clear subjDateMatrix; close; clear adultFig;
 
 % Loop through kid subject IDs
 kidSubj = fieldnames(kidData);
 experiments = fieldnames(kidData.AAH06);
-figure(2)
+kidFig = figure('visible','off'); % Open figure
 for i = 1:length(kidSubj) % Loop across kid subject IDs
     subj = kidSubj{i};
     for j = 1:length(experiments) % Loop across experiment names
@@ -119,16 +138,25 @@ xticks([0 365 365*2 365*3 365*4 365*5]);
 xticklabels({'0','1','2','3','4','5'});
 xlabel('Years Since First Experiment');
 a = get(gca,'XTickLabel');
-set(gca,'XTickLabel',a,'fontsize',24);
+set(gca,'XTickLabel',a);%,'fontsize',24);
 a = get(gca,'YTickLabel');
-set(gca,'YTickLabel',a,'fontsize',24);
+set(gca,'YTickLabel',a);%,'fontsize',24);
 
 %Adding gridlines
 set(gca,'YGrid','on')
 legend('Year 1 Scan','Year 1 Behavioral','Year 2 Scan','Year 2 Behavioral',...
        'Year 3 Scan','Year 3 Behavioral','Year 4 Scan','Year 4 Behavioral',...
-       'Year 5 Scan','Year 5 Behavioral','Location','best');
+       'Year 5 Scan','Year 5 Behavioral','Location','eastoutside');
 title('Dates of Kid Experiments')
 hold off
 
-clear subjDateMatrix
+% Reset axis size
+set(kidFig,'PaperUnits','centimeters');
+set(kidFig,'PaperPosition',axisSize);
+
+% Save figure of adult dates
+saveas(kidFig,[RAID('projects','Longitudinal','data_management',...
+       'PlotAllDates') '/kidDates_' date '.jpg'],'jpg');
+
+clear subjDateMatrix; close; clear kidFig;
+end
