@@ -10,7 +10,7 @@ function setupEyelink_Projector( edfName, win )
 % AR March 2019
 
 % Set scaling factor for shrinking screen resolution to fit on projector
-shrinkWidth = .2; % This fraction of the width will be taken off
+shrinkWidth = .25; % This fraction of the width will be taken off
 shrinkHeight = .2; % This fraction of the height will be taken off
 
 % Initialize eyelink and check to make sure Eyelink is online
@@ -67,7 +67,7 @@ Eyelink('command', ...
 % controls how far the dots are from the bottom of the screen (if height-1, 
 % dots could appear at very bottom).
 rect = [width*shrinkWidth, height*shrinkHeight, ...
-        width - width*shrinkWidth, height-200];
+        width - width*shrinkWidth, height-300];
 
 % Set screen coordinates
 Eyelink('command','screen_pixel_coords = %ld %ld %ld %ld', 0, 0, ...
@@ -89,6 +89,8 @@ fprintf('\n\nRun calibration and validation now. When done, hit "Output/Record"\
 
 % Run calibration and validation
 EyelinkDoTrackerSetup(el);
+
+fprintf('\n\nContinue to accept fixation until drift correction error is reduced. When done, go back to camera setup and then hit "Output/Record"\n\n\n');
 
 % Run drift correction
 EyelinkDoDriftCorrect(el,width*.5, height*.5); % Specified fixation point
