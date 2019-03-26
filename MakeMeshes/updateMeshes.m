@@ -1,11 +1,17 @@
-function updateMeshes( sesDir )
+function updateMeshes( hemisphere, smooth_iterations, sesDir )
 % updateMeshes reinstalls segmentation from nifti class file and makes new
 % meshes
 %
 % In the mrVista directory, make sure that there is a softlink to the
 % 3Dantomy, and that the volume anatomy is aligned to the inplane.
 %
-%   updateMeshes( [sesDir] )
+%   updateMeshes( [hemisphere], [smooth], [sesDir] )
+%       hemisphere (optional): (cell of strings) Which hemispheres would
+%                              you like to construct? (i.e. {'left'},
+%                              {'right'} or {'left','right'}) Default is
+%                              both hemispheres
+%       smooth_iterations (optional): (vector) number of smooth iterations 
+%                                     you would like (default is [200 32])
 %       sesDir (optional): (string) path to mrVista directory (default is 
 %                           current directory)
 %
@@ -27,18 +33,53 @@ function updateMeshes( sesDir )
 %             automatically
 % AR Feb 2019 used mrmStart to start mrMesh at the beginning of the code
 % AR Mar 2019 commented out setting vANATOMYPATH as it was causing issues
-%             and is unnecessary; made sesDir an optional argument
+%             and is unnecessary; made sesDir an optional argument; added
+%             in arguments for hemisphere and smooth_iterations
 
+%% Checking inputs and system
 % Check to make sure mrVista is added to the path
 if ~exist('mrVista')
     error('Please add mrVista to your path')
 end
 
 % Check inputs
-if ~exist('sesDir')
-    sesDir = pwd;
+% Specify hemispheres and smooth iterations
+if ~exist('hemisphere') | isempty(hemisphere)
+    fullH = {'left','right'};
+    shortH = {'lh','rh'};
+else
+    fullH = {};
+    shortH = {};
+    if any(strcmp(hemisphere,'left'))
+        fullH{end+1} = 'left';
+        shortH{end+1} = 'lh';
+    end
+    if any(strcmp(hemisphere,'right'))
+        fullH{end+1} = 'right';
+        shortH{end+1} = 'rh';
+    end
+    if isempty(fullH)
+        error(['Please enter the hemisphere you would like to build as a '...
+              'cell array (i.e. {"left"},{"right"} or {"left","right"}).'])
+    end
 end
 
+% Specify smooth iterations
+if ~exist('smooth_iterations')
+    smooth_iterations = [200 32];
+elseif ~isnumeric(smooth_iterations)
+    error(['When specifying your smooth iterations, please use a numeric '...
+          'input (e.g. [200 32]).'])
+end
+
+% Check for session directory
+if ~exist('sesDir')
+    sesDir = pwd;
+elseif ~exist(sesDir)
+    error(['Cannot find ' sesDir]);
+end
+
+%% Building meshes
 % Start mrMesh (important for Macs)
 mrmStart
 
@@ -64,21 +105,8 @@ installSegmentation([],[],clsNftiFile,3); % You may be prompted to for the
 % Open volume view
 hV = initHiddenGray;
 
-%{
-% Set Volume Anatomy Path
-mrSessPath = fullfile(sesDir, 'mrSESSION.mat');
-vANATOMYPATH = [anatomy 't1.nii.gz'];
-save(mrSessPath, 'vANATOMYPATH', '-append');
-saveSession;
-%}
-
 % Load anatomy
 hV = loadAnat(hV);
-
-% Specify hemispheres and smooth iterations
-fullH = {'left','right'};
-shortH = {'lh','rh'};
-smooth = [200 32];
 
 % Loop across hemispheres
 for h = 1:length(fullH)
@@ -88,33 +116,16 @@ for h = 1:length(fullH)
     
    %Build wrinkled mesh
    hV = makeWrinkledMesh(hV,fullH{h},wName);
-   
-   %{
-   % Build and save wrinkled mesh
-   hV = meshBuild(hV,fullH{h}); % When you are prompted for parameters, you
-                                % can just press enter. We rename the mesh
-                                % name below, so it doesn't matter what you
-                                % originally enter. It'll also ask you to
-                                % verify the class file path. When it asks
-                                % you to save, you can cancel or save it as
-                                % lh_wrinkled.mat or rh_wrinkled.mat.
-    %}
     
    % Get wrinkled mesh
    wmsh = viewGet(hV,'currentmesh');
-   
-   %{
-   % Naming the wrinkled mesh
-   wName = [shortH{h},'_wrinkled'];
-   wmsh = meshSet(wmsh,'name',wName);
-   %}
    
    % Saving the wrinkled mesh
    wFName = [anatomy wName '.mat'];
    mrmWriteMeshFile(wmsh,wFName);
    
    % Looping across smooth iterations
-    for s = smooth
+    for s = smooth_iterations
         
         % Naming the inflated mesh
         iName = [shortH{h},'_inflated_',mat2str(s),'_1'];
