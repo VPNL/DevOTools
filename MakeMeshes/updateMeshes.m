@@ -86,27 +86,8 @@ mrmStart
 % Go to session directory
 cd(sesDir)
 
-% Find 3D anatomy file
-if exist('3Danatomy')
-    anatomy = '3Danatomy/';
-elseif exist('3DAnatomy')
-    anatomy = '3DAnatomy/';
-else
-    error('Please make a softlink to the appropriate 3Danatomy folder')
-end
-
-% Specify class nifti file
-clsNftiFile = [anatomy 't1_class.nii.gz'];
-
-% Reinstall segmentation from updated t1_class.nii.gz file
-installSegmentation([],[],clsNftiFile,3); % You may be prompted to for the
-                                          % Volume Anatomy Path
-                                          
-% Open volume view
-hV = initHiddenGray;
-
-% Load anatomy
-hV = loadAnat(hV);
+% Reinstall t1_class file
+[hV, anatomy] = reinstallClassFile( sesDir );
 
 % Loop across hemispheres
 for h = 1:length(fullH)
@@ -151,18 +132,5 @@ for h = 1:length(fullH)
 end
 
 clx
-
-% Every time gray coordinates are updated, mrVista saves a folder with the
-% deleted coordinates. We don't need this folder, so it gets removed below.
-% Get all contents of mrVista directory
-list = dir;
-list = list([list.isdir]); % Only need folders in list
-list = {list.name}; % Organize into a cell array
-% Loop through all folders
-for d = 1:length(list)
-    if length(list{d}) > 12 & strcmp(list{d}(1:12),'deletedGray_')
-        rmdir(list{d},'s');
-    end
-end
 
 end
