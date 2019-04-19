@@ -51,7 +51,12 @@ list = {list.name}; % Organize into a cell array
 % Loop through all folders
 for d = 1:length(list)
     if length(list{d}) > 12 & strcmp(list{d}(1:12),'deletedGray_')
-        rmdir(list{d},'s');
+        try
+            rmdir(list{d},'s');
+        catch
+            warning(['Could not remove deleted gray folder. May not '... 
+                     'have permissions for this session directory'])
+        end
     end
 end
 
