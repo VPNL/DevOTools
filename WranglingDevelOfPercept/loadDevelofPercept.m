@@ -18,6 +18,7 @@ function data = loadDevelofPercept( filename, sheetNames, xlRange )
 %                       generated using the function loadDevelofPercept
 %
 %AR Oct 2018
+%AR May 2019 Fixed bug so that data matches sheetNames
 
 %Argument checks
 if nargin < 3
@@ -29,7 +30,18 @@ if nargin < 2
               'Kids Year 4','Kids Year 5'};
 end
 
-for s = 1:length(sheetNames) %Looping across all of the sheets in Development of Perception
+%Store all sheet names
+allSheets = {'Adults Year 4','Adults Year 3','Adults Year 2',...
+             'Adults Year 1','Kids Year 1','Kids Year 2','Kids Year 3',...
+             'Kids Year 4','Kids Year 5'};
+
+% Find the sheet indices in the file for the sheet names inputed
+iSheets = [];
+for i = 1:length(sheetNames)
+	iSheets = [iSheets find(contains(allSheets,sheetNames{i}))];
+end
+
+for s = iSheets %Looping across all of the sheets in Development of Perception
     [~,~,data(s).raw] = xlsread(filename,s,xlRange); %Importing Raw Data
     data(s).sheet = sheetNames(s); %Labeling sheet
 end
