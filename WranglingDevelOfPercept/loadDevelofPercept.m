@@ -41,9 +41,11 @@ for i = 1:length(sheetNames)
 	iSheets = [iSheets find(contains(allSheets,sheetNames{i}))];
 end
 
+j = 1;
 for s = iSheets %Looping across all of the sheets in Development of Perception
-    [~,~,data(s).raw] = xlsread(filename,s,xlRange); %Importing Raw Data
-    data(s).sheet = allSheets(s); %Labeling sheet
+    [~,~,data(j).raw] = xlsread(filename,s,xlRange); %Importing Raw Data
+    data(j).sheet = allSheets(s); %Labeling sheet
+    j = j + 1;
 end
 
 end
