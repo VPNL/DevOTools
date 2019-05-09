@@ -43,7 +43,7 @@ end
 
 for s = iSheets %Looping across all of the sheets in Development of Perception
     [~,~,data(s).raw] = xlsread(filename,s,xlRange); %Importing Raw Data
-    data(s).sheet = sheetNames(s); %Labeling sheet
+    data(s).sheet = allSheets(s); %Labeling sheet
 end
 
 end
